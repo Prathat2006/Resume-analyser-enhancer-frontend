@@ -42,7 +42,7 @@ It allows users to upload a PDF resume, provide a job listing URL (Naukri.com), 
    ```bash
    git clone https://github.com/Prathat2006/Resume-analyser-enhancer-front-end.git
    cd resume-analyser-enhancer-front-end
-````
+    ``` 
 
 2. Install dependencies:
 
