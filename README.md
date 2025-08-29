@@ -32,7 +32,7 @@ It allows users to upload a PDF resume, provide a job listing URL (Naukri.com), 
 ## 📦 Prerequisites
 - Node.js **v18+**
 - npm or yarn
-- A running backend API (see [Backend](#-backend))
+- A running backend API (see [Backend](https://github.com/Prathat2006/Resume-analyser-enhancer-frontend?tab=readme-ov-file#%EF%B8%8F-backend-recommended))
 
 ---
 
