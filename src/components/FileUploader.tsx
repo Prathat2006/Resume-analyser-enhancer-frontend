@@ -48,19 +48,36 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
   const canGetScore = pdfFile && jobUrl && validateNaukriUrl(jobUrl) && !errors.pdf && !errors.url;
 
   return (
-    <div className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-8 border border-blue-900/20 shadow-2xl">
+    <div className="bg-slate-900/80 backdrop-blur-lg rounded-3xl p-8 border border-blue-500/30 shadow-2xl shadow-blue-500/10">
       <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
-        <Upload className="text-blue-400" />
+        <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl">
+          <Upload className="text-white h-6 w-6" />
+        </div>
         Upload Resume & Job Details
       </h2>
       
       <div className="space-y-8">
         {/* PDF Upload */}
         <div>
-          <label className="block text-sm font-medium text-blue-300 mb-4">
+          <label className="block text-sm font-medium text-blue-200 mb-4">
             Upload Resume (PDF only)
           </label>
-          <div className="relative">
+          <div className="relative"
+                onDragOver={(e) => e.preventDefault()}
+    onDrop={(e) => {
+      e.preventDefault();
+      const file = e.dataTransfer.files?.[0];
+      if (file) {
+        if (file.type === "application/pdf") {
+          setPdfFile(file);
+          setErrors(prev => ({ ...prev, pdf: undefined }));
+          onFilesUploaded(file, jobUrl);
+        } else {
+          setErrors(prev => ({ ...prev, pdf: "Please upload a PDF file only" }));
+        }
+      }
+    }}
+  >
             <input
               type="file"
               accept=".pdf"
@@ -70,24 +87,28 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             />
             <label
               htmlFor="pdf-upload"
-              className={`flex items-center justify-center w-full h-32 border-2 border-dashed rounded-xl cursor-pointer transition-all duration-300 ${
+              className={`flex items-center justify-center w-full h-32 border-2 border-dashed rounded-2xl cursor-pointer transition-all duration-300 ${
                 pdfFile 
-                  ? 'border-green-400 bg-green-900/20' 
-                  : 'border-blue-400/50 bg-blue-900/10 hover:border-blue-400 hover:bg-blue-900/20'
+                  ? 'border-emerald-400 bg-emerald-500/10 shadow-lg shadow-emerald-500/20' 
+                  : 'border-blue-400 bg-blue-500/10 hover:border-blue-300 hover:bg-blue-500/20 hover:shadow-lg hover:shadow-blue-500/20'
               }`}
             >
               <div className="text-center">
                 {pdfFile ? (
                   <>
-                    <FileText className="mx-auto h-8 w-8 text-green-400 mb-2" />
-                    <p className="text-sm text-green-400 font-medium">{pdfFile.name}</p>
-                    <p className="text-xs text-green-300 mt-1">PDF uploaded successfully</p>
+                    <div className="p-3 bg-emerald-500 rounded-full mx-auto mb-3 w-fit">
+                      <FileText className="h-8 w-8 text-white" />
+                    </div>
+                    <p className="text-sm text-emerald-300 font-medium">{pdfFile.name}</p>
+                    <p className="text-xs text-emerald-200 mt-1">PDF uploaded successfully</p>
                   </>
                 ) : (
                   <>
-                    <Upload className="mx-auto h-8 w-8 text-blue-400 mb-2" />
-                    <p className="text-sm text-blue-300">Click to upload or drag and drop</p>
-                    <p className="text-xs text-blue-400 mt-1">PDF files only</p>
+                    <div className="p-3 bg-blue-500 rounded-full mx-auto mb-3 w-fit">
+                      <Upload className="h-8 w-8 text-white" />
+                    </div>
+                    <p className="text-sm text-blue-200">Click to upload or drag and drop</p>
+                    <p className="text-xs text-blue-300 mt-1">PDF files only</p>
                   </>
                 )}
               </div>
@@ -95,7 +116,7 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
           </div>
           {errors.pdf && (
             <p className="text-red-400 text-sm mt-2 flex items-center gap-2">
-              <span className="w-1 h-1 bg-red-400 rounded-full"></span>
+              <span className="w-2 h-2 bg-red-400 rounded-full"></span>
               {errors.pdf}
             </p>
           )}
@@ -103,8 +124,10 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
 
         {/* URL Input */}
         <div>
-          <label className="block text-sm font-medium text-blue-300 mb-4 flex items-center gap-2">
-            <Link className="h-4 w-4" />
+          <label className="block text-sm font-medium text-blue-200 mb-4 flex items-center gap-2">
+            <div className="p-1 bg-blue-500 rounded-lg">
+              <Link className="h-4 w-4 text-white" />
+            </div>
             Job Listing URL (Naukri.com)
           </label>
           <input
@@ -112,17 +135,17 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
             value={jobUrl}
             onChange={handleUrlChange}
             placeholder="https://www.naukri.com/job-listings-..."
-            className="w-full px-4 py-3 bg-slate-700/50 border border-blue-900/30 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300"
+            className="w-full px-4 py-3 bg-slate-800/50 border border-blue-500/30 rounded-xl text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition-all duration-300 shadow-sm"
           />
           {errors.url && (
             <p className="text-red-400 text-sm mt-2 flex items-center gap-2">
-              <span className="w-1 h-1 bg-red-400 rounded-full"></span>
+              <span className="w-2 h-2 bg-red-400 rounded-full"></span>
               {errors.url}
             </p>
           )}
           {jobUrl && validateNaukriUrl(jobUrl) && (
-            <p className="text-green-400 text-sm mt-2 flex items-center gap-2">
-              <span className="w-1 h-1 bg-green-400 rounded-full"></span>
+            <p className="text-emerald-400 text-sm mt-2 flex items-center gap-2">
+              <span className="w-2 h-2 bg-emerald-400 rounded-full"></span>
               Valid Naukri.com URL detected
             </p>
           )}
@@ -132,10 +155,10 @@ export const FileUploader: React.FC<FileUploaderProps> = ({
         <button
           onClick={onGetScore}
           disabled={!canGetScore || loading}
-          className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-300 flex items-center justify-center gap-3 ${
+          className={`w-full py-4 px-6 rounded-2xl font-semibold text-white transition-all duration-300 flex items-center justify-center gap-3 ${
             canGetScore && !loading
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transform hover:scale-[1.02] shadow-lg hover:shadow-blue-500/25'
-              : 'bg-slate-600 cursor-not-allowed opacity-50'
+              ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 transform hover:scale-[1.02] shadow-xl hover:shadow-blue-500/40'
+              : 'bg-slate-700 cursor-not-allowed opacity-50'
           }`}
         >
           {loading ? (

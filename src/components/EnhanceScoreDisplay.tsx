@@ -15,12 +15,12 @@ interface ScoreDisplayProps {
   enhancing: boolean;
 }
 
-export const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
+export const EnhanceScoreDisplay: React.FC<ScoreDisplayProps> = ({
   score,
-  sessionId,
-  onEnhance,
+  // sessionId,
+  // onEnhance,
   loading,
-  enhancing
+  // enhancing
 }) => {
   if (loading) {
     return (
@@ -65,7 +65,7 @@ export const ScoreDisplay: React.FC<ScoreDisplayProps> = ({
     let textColor = score.eligible ? 'text-emerald-400' : 'text-red-400';
     let shadowColor = score.eligible ? '#10B98160' : '#EF444460';
 
-if (percentage <= 35 ) {
+    if (percentage <= 35 ) {
       progressColor = '#EF4444'; // Red
       textColor = 'text-red-400';
       shadowColor = '#EF444460';
@@ -130,7 +130,7 @@ if (percentage <= 35 ) {
         <div className="p-2 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl">
           <TrendingUp className="text-white h-6 w-6" />
         </div>
-        Resume Analysis Results
+        Enhance Resume Analysis Results
       </h2>
 
       <div className="flex flex-col items-center text-center">
@@ -172,7 +172,7 @@ if (percentage <= 35 ) {
             )}
           </div>
 
-          {score.eligible && (
+          {/* {score.eligible && (
             <button
               onClick={onEnhance}
               disabled={enhancing}
@@ -194,7 +194,7 @@ if (percentage <= 35 ) {
                 </>
               )}
             </button>
-          )}
+          )} */}
         </div>
       </div>
     </div>
